@@ -3,6 +3,7 @@ $("#btnUpgradeCheck").click(function () {
     self.find(".bi-repeat").hide()
     self.find(".spinner-border").show()
     const repoName = self.data("repo")
+    console.log(self.data())
     $("#btnUpgrade span").text("Checking...")
     $("#btnUpgrade .icon").removeClass("bi-arrow-up bi-pencil").addClass("bi-hourglass-split")
     $.post("/api/helm/repo/update?name=" + repoName).fail(function (xhr) {
@@ -175,7 +176,6 @@ $('#upgradeModal select').change(function () {
     $.get("/api/helm/repo/values?chart=" + $("#upgradeModal").data("chart") + "&version=" + self.val()).fail(function (xhr) {
         reportError("Failed to get upgrade info", xhr)
     }).done(function (data) {
-        console.log(data)
         data = hljs.highlight(data, {language: 'yaml'}).value
         $("#upgradeModal .ref-vals").html(data)
     })
