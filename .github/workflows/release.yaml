@@ -97,10 +97,15 @@ jobs:
           sh ./ci/bump-versions.sh
           git add charts/helm-dashboard/Chart.yaml
           git add plugin.yaml
-          git commit -m "Increment chart versions [skip ci]" || echo "Already up-to-date"
-          git push -f || echo "Nothing to push!"
+          git commit -m "Bumping release ${{ needs.pre_release.outputs.release_tag }} [skip ci]" || echo "Already up-to-date"
         env:
           APP_VERSION: ${{ needs.pre_release.outputs.release_tag }}
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.ADMIN_KOMI_GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          tags: false    
       - name: Push folder to helm-charts repository
         uses: crykn/copy_folder_to_another_repo_action@v1.0.6
         env:
