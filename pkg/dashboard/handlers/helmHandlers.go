@@ -296,6 +296,7 @@ func (h *HelmHandler) LocalChartAdd(c *gin.Context) {
 	chartPath := c.PostForm("path")
 	res, err := utils.GetChartInformation(chartPath)
 	if err != nil {
+		_ = c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 	h.Data.IsLocal = true
